@@ -18,8 +18,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QMainWindow,
     QMenu, QMenuBar, QPushButton, QSizePolicy,
-    QStatusBar, QTableWidget, QTableWidgetItem, QWidget, QButtonGroup)
+    QStatusBar, QTableWidget, QTableWidgetItem, QWidget, QButtonGroup, QHBoxLayout)
 from buttonGroupLogic import buttonGroupLogic
+from AddButtonController import AddButtonController
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -126,6 +127,26 @@ class Ui_MainWindow(object):
         QMetaObject.connectSlotsByName(MainWindow)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         MainWindow.setMinimumSize(QSize(1200, 600))
+        
+        #connecting buttons to their respective controllers
+        self.addButton.clicked.connect(AddButtonController.handle_addButton_click)
+        
+        # Set the number of columns
+        self.tableWidget.setColumnCount(8)  # or whatever number you need
+        self.tableWidget.setRowCount(1)     # Only one row initially
+
+        # Create the button
+        self.insertRowButton = QPushButton("Insert Row")
+        #self.insertRowButton.clicked.connect(self.insert_new_row_above)
+
+        # Make the button stretch (fill the cell completely)
+        self.insertRowButton.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding
+        )
+
+        # Span it across all columns and add it directly
+        self.tableWidget.setSpan(0, 0, 1, self.tableWidget.columnCount())
+        self.tableWidget.setCellWidget(0, 0, self.insertRowButton)
 
         
 
@@ -158,6 +179,7 @@ class Ui_MainWindow(object):
         self.menuProduct_Manager.setTitle(QCoreApplication.translate("MainWindow", u"Product Manager", None))
 
     # retranslateUi
+    
     
     
 
