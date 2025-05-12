@@ -19,7 +19,7 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QMainWindow,
     QMenu, QMenuBar, QPushButton, QSizePolicy,
     QStatusBar, QTableWidget, QTableWidgetItem, QWidget, QButtonGroup)
-
+from buttonGroupLogic import buttonGroupLogic
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -59,12 +59,8 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.salveButton, 2, 4, 1, 1)
 
-        # Separando os botões em grupos
-
-        self.mainButtons = [self.addButton, self.editButton, self.removeButton, self.qtdButton]
-        self.secondaryButtons = [self.backButton, self.salveButton]
-
-        # Garantindo que os botoes sejam ou não cliqueáveis
+        
+  
         
 
         self.tableWidget = QTableWidget(self.centralwidget)
@@ -116,13 +112,11 @@ class Ui_MainWindow(object):
         self.removeButton.setCheckable(True)
         self.qtdButton.setCheckable(True)
 
-        # grouping up the buttons
-        group = QButtonGroup(MainWindow)
-        group.setExclusive(True)
-        group.addButton(self.addButton)
-        group.addButton(self.editButton)
-        group.addButton(self.removeButton)
-        group.addButton(self.qtdButton)
+        # Configura os grupos de botões
+        self.mainButtons = [self.addButton, self.editButton, self.removeButton, self.qtdButton]
+        self.secondaryButtons = [self.backButton, self.salveButton]
+        self.groupButtons = buttonGroupLogic(self.mainButtons, self.secondaryButtons)
+
         self.retranslateUi(MainWindow)
 
         # disable save and back button on awake
