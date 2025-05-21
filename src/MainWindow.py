@@ -107,11 +107,6 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuProduct_Manager.menuAction())
 
-        # making buttons checkable
-        self.addButton.setCheckable(True)
-        self.editButton.setCheckable(True)
-        self.removeButton.setCheckable(True)
-        self.qtdButton.setCheckable(True)
 
         # Configura os grupos de botões
         self.mainButtons = [self.addButton, self.editButton, self.removeButton, self.qtdButton]
@@ -128,25 +123,12 @@ class Ui_MainWindow(object):
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         MainWindow.setMinimumSize(QSize(1200, 600))
         
-        #connecting buttons to their respective controllers
-        self.addButton.clicked.connect(AddButtonController.handle_addButton_click)
+        # Cria o controller e conecta o botão
+        self.addButtonController = AddButtonController(self.tableWidget, self.addButton)
         
-        # Set the number of columns
-        self.tableWidget.setColumnCount(8)  # or whatever number you need
-        self.tableWidget.setRowCount(1)     # Only one row initially
-
-        # Create the button
-        self.insertRowButton = QPushButton("Insert Row")
-        #self.insertRowButton.clicked.connect(self.insert_new_row_above)
-
-        # Make the button stretch (fill the cell completely)
-        self.insertRowButton.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding
-        )
-
-        # Span it across all columns and add it directly
-        self.tableWidget.setSpan(0, 0, 1, self.tableWidget.columnCount())
-        self.tableWidget.setCellWidget(0, 0, self.insertRowButton)
+        
+     
+        
 
         
 
