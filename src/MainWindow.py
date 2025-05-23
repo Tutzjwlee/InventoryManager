@@ -18,10 +18,17 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QMainWindow,
     QMenu, QMenuBar, QPushButton, QSizePolicy,
-    QStatusBar, QTableWidget, QTableWidgetItem, QWidget, QButtonGroup, QHBoxLayout)
+    QStatusBar, QTableWidget, QTableWidgetItem, QWidget, QButtonGroup, QHBoxLayout, QAbstractItemView)
+# imported button logics
 from buttonGroupLogic import buttonGroupLogic
+
 from AddButtonController import AddButtonController
+
+
+
 class Ui_MainWindow(object):
+    
+    
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
@@ -33,6 +40,8 @@ class Ui_MainWindow(object):
         self.addButton = QPushButton(self.centralwidget)
         self.addButton.setObjectName(u"pushButton")
 
+        self.lastClickedButton = None
+        
         self.gridLayout.addWidget(self.addButton, 2, 0, 1, 1)
 
         self.editButton = QPushButton(self.centralwidget)
@@ -113,6 +122,14 @@ class Ui_MainWindow(object):
         self.secondaryButtons = [self.backButton, self.salveButton]
         self.groupButtons = buttonGroupLogic(self.mainButtons, self.secondaryButtons)
 
+        # Salve last button clicked
+        self.addButton.clicked.connect(lambda: self.setLastClickedButton("addButton"))
+        self.editButton.clicked.connect(lambda: self.setLastClickedButton("editButton"))
+        self.removeButton.clicked.connect(lambda: self.setLastClickedButton("removeButton"))
+        self.qtdButton.clicked.connect(lambda: self.setLastClickedButton("qtdButton"))
+        self.backButton.clicked.connect(lambda: self.setLastClickedButton("backButton"))
+        self.salveButton.clicked.connect(lambda: self.setLastClickedButton("salveButton"))
+
         self.retranslateUi(MainWindow)
 
         # disable save and back button on awake
@@ -126,6 +143,10 @@ class Ui_MainWindow(object):
         # Cria o controller e conecta o botão
         self.addButtonController = AddButtonController(self.tableWidget, self.addButton)
         
+        # Set table not editable 
+        self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        
+    
         
      
         
@@ -155,14 +176,18 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem5 = self.tableWidget.horizontalHeaderItem(5)
         ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"Full Pv", None));
         ___qtablewidgetitem6 = self.tableWidget.horizontalHeaderItem(6)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"Last Edit Quantity", None));
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"Date Last Edited", None));
         ___qtablewidgetitem7 = self.tableWidget.horizontalHeaderItem(7)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"Type Edit", None));
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"Quantity Changed", None));
         self.menuProduct_Manager.setTitle(QCoreApplication.translate("MainWindow", u"Product Manager", None))
 
     # retranslateUi
     
+    # last button clicked save
     
+    def setLastClickedButton(self, button_name):
+        self.lastClickedButton = button_name
+        print(f"Last clicked button: {self.lastClickedButton}")
     
 
         
